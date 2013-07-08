@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner</title>
+
+  <% if(options.steal.options) { %>
+    <script>
+      steal = <%= JSON.stringify(options.steal.options) %>
+    </script>
+  <% } %>
+
+  <script src="<%= options.steal.url %>"></script>
+
+  <% if (options.steal.map) { %>
+    <script>
+      steal.map(<%= JSON.stringify(options.steal.map) %>);
+    </script>
+  <% } %>
+
+  <% if(options.steal.executed) { %>
+    <script>
+      <% options.steal.executed.forEach(function(script) { %>
+        steal.executed("<%= script %>");
+      <% }) %>
+    </script>
+  <% } %>
+
+ <% css.forEach(function(style){ %>
+  <link rel="stylesheet" type="text/css" href="<%= style %>">
+  <% }) %>
+  
+  <script>
+  	//console.log(steal);
+  	//steal.rootUrl("/.grunt/grunt-contrib-jasmine/src/");
+  	console.log(steal.config().root);
+	steal
+
+  	<% with (scripts) { %>
+  	//Adding jasmine. vendor and helpers
+  	<% [].concat(jasmine, vendor, helpers).forEach(function(script){ %>
+    	.then("<%= fn.pathify(script) %>")
+  	<% }) %>
+  	<% }; %>
+	
+	
+	
+	//Adding the spec files
+	//.then("/.grunt/grunt-contrib-jasmine/src/<= fn.pathify(script) >")
+	<% scripts.specs.forEach(function(script, i){ %>
+		//.then("<%= fn.pathify(script) %>")
+		// console.log('<%= script %>');
+		//.then("<%= script %>")
+		.then("<%= script.substring(4) %>")
+	<% }) %>
+	
+	//Adding the reporters
+	<% scripts.reporters.forEach(function(script, i){ %>
+		.then("/<%= script %>")
+	<% }) %>
+	
+	//Adding the start
+	<% scripts.start.forEach(function(script, i){ %>		
+		.then("<%= fn.pathify(script) %>")
+	<% }) %>
+  </script>
+</head>
+<body>
+</body>
+</html>
